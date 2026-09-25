@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpotiMath — Conjuntos, Venn y Relaciones</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============ PANTALLA DE LOGIN / REGISTRO ============ -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="logo-icono">🎵</div>
+      <h1>SpotiMath</h1>
+      <p>Conjuntos, relaciones y música</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button type="button" id="tabLogin" class="active">Iniciar sesión</button>
+      <button type="button" id="tabRegister">Registrarse</button>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <label for="loginUser">Usuario</label>
+      <input type="text" id="loginUser" required autocomplete="username">
+      <label for="loginPass">Contraseña</label>
+      <input type="password" id="loginPass" required autocomplete="current-password">
+      <button type="submit" class="btn-primary">Entrar</button>
+      <p id="loginError" class="auth-error d-none"></p>
+    </form>
+
+    <form id="registerForm" class="auth-form d-none">
+      <label for="regUser">Elige un usuario</label>
+      <input type="text" id="regUser" required autocomplete="username">
+      <label for="regPass">Elige una contraseña</label>
+      <input type="password" id="regPass" required autocomplete="new-password">
+      <button type="submit" class="btn-primary">Crear cuenta</button>
+      <p id="registerError" class="auth-error d-none"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APLICACIÓN (tras iniciar sesión) ============ -->
+<div id="appScreen" class="d-none">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🎵 SpotiMath</div>
+    <div class="sidebar-user">Sesión activa<strong id="nombreUsuario"></strong></div>
+    <nav class="sidebar-nav">
+      <div>🎧 Selección musical</div>
+      <div>📊 Dashboard matemático</div>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <button type="button" id="btnLogout" class="btn-logout">Cerrar sesión</button>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- ---------- FASE 1: Selección musical ---------- -->
+    <section id="selectionPhase">
+      <h2>Elige tus géneros favoritos</h2>
+      <p class="subtitulo">Selecciona uno o varios géneros; luego marca los artistas que te gustan de cada uno.</p>
+      <div id="generosGrid" class="generos-grid"></div>
+      <div id="artistasContenedor"></div>
+      <button type="button" id="btnFinalizar" class="btn-flotante d-none">¿Terminaste tu selección musical?</button>
+    </section>
+
+    <!-- ---------- FASE 2: Dashboard matemático ---------- -->
+    <section id="dashboardPhase" class="d-none">
+      <div class="dashboard-header">
+        <div>
+          <h2>Dashboard matemático</h2>
+          <p class="subtitulo">Conjuntos, diagrama de Venn y propiedades de relaciones generados desde tu selección.</p>
+        </div>
+        <button type="button" id="btnVolver" class="btn-secundario">← Editar selección</button>
+      </div>
+
+      <!-- Conjuntos generados -->
+      <div class="seccion">
+        <h3>1. Conjuntos generados</h3>
+        <p class="desc">Formalización de los conjuntos a partir de tu selección musical.</p>
+        <div id="conjuntosResumen" class="sets-grid"></div>
+      </div>
+
+      <!-- Diagrama de Venn -->
+      <div class="seccion">
+        <h3>2. Diagrama de Venn interactivo</h3>
+        <p class="desc">Elige el dominio (Géneros o Artistas) y una operación para resaltar la región correspondiente.</p>
+
+        <div class="venn-tabs">
+          <button type="button" id="vennTabGeneros" class="active">Géneros</button>
+          <button type="button" id="vennTabArtistas">Artistas</button>
+        </div>
+
+        <div class="venn-layout">
+          <div class="venn-diagrama">
+            <svg id="vennSvg" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <clipPath id="clipCircA"><circle cx="160" cy="140" r="88"/></clipPath>
+                <mask id="maskCutA">
+                  <rect x="0" y="0" width="400" height="260" fill="white"/>
+                  <circle cx="160" cy="140" r="88" fill="black"/>
+                </mask>
+                <mask id="maskCutB">
+                  <rect x="0" y="0" width="400" height="260" fill="white"/>
+                  <circle cx="240" cy="140" r="88" fill="black"/>
+                </mask>
+              </defs>
+
+              <rect x="8" y="8" width="384" height="244" rx="12" class="universo-rect"/>
+              <text x="20" y="30" class="universo-label">U</text>
+
+              <rect id="regionFueraA" class="region" x="8" y="8" width="384" height="244" mask="url(#maskCutA)"/>
+              <circle id="regionB" class="region" cx="240" cy="140" r="88"/>
+              <circle id="regionA" class="region" cx="160" cy="140" r="88"/>
+              <circle id="regionOnlyA" class="region" cx="160" cy="140" r="88" mask="url(#maskCutB)"/>
+              <circle id="regionOnlyB" class="region" cx="240" cy="140" r="88" mask="url(#maskCutA)"/>
+              <circle id="regionInter" class="region" cx="240" cy="140" r="88" clip-path="url(#clipCircA)"/>
+
+              <circle cx="160" cy="140" r="88" class="circulo-borde circulo-a"/>
+              <circle cx="240" cy="140" r="88" class="circulo-borde circulo-b"/>
+              <text x="108" y="75" class="set-label" id="vennLabelA">A</text>
+              <text x="278" y="75" class="set-label" id="vennLabelB">B</text>
+            </svg>
+          </div>
+
+          <div class="venn-controles">
+            <div class="venn-btn-grid">
+              <button type="button" class="venn-btn" data-op="A">A</button>
+              <button type="button" class="venn-btn" data-op="B">B</button>
+              <button type="button" class="venn-btn" data-op="union">A ∪ B</button>
+              <button type="button" class="venn-btn" data-op="inter">A ∩ B</button>
+              <button type="button" class="venn-btn" data-op="difAB">A − B</button>
+              <button type="button" class="venn-btn" data-op="difBA">B − A</button>
+              <button type="button" class="venn-btn" data-op="compA" style="grid-column: span 2;">Aᶜ (complemento)</button>
+            </div>
+            <div id="vennResultado" class="venn-resultado"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analizador de relaciones -->
+      <div class="seccion">
+        <h3>3. Analizador de relaciones y propiedades</h3>
+        <p class="desc">Relación "Influencia musical" (R) evaluada sobre los géneros que seleccionaste.</p>
+        <div id="relacionDominio" class="relacion-dominio"></div>
+        <div id="propiedadesGrid" class="propiedades-grid"></div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

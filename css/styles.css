@@ -1,0 +1,218 @@
+/* ==========================================================
+   styles.css — SpotiMath (estilo Spotify, dark mode)
+   ========================================================== */
+
+:root {
+  --bg: #0d0d0d;
+  --bg-elevated: #181818;
+  --bg-card: #1c1c1c;
+  --bg-sidebar: #000000;
+  --green: #1DB954;
+  --green-hover: #1ed760;
+  --text: #FFFFFF;
+  --text-subdued: #B3B3B3;
+  --border: #2a2a2a;
+  --danger: #F15E6C;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.d-none { display: none !important; }
+
+button { font-family: inherit; cursor: pointer; }
+
+/* ---------- Pantalla de autenticación ---------- */
+#authScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #1a1a1a 0%, #0d0d0d 60%);
+  padding: 24px;
+}
+
+.auth-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-logo { text-align: center; margin-bottom: 20px; }
+.auth-logo .logo-icono { font-size: 40px; }
+.auth-logo h1 { font-size: 22px; margin: 6px 0 2px; }
+.auth-logo p { color: var(--text-subdued); font-size: 13px; margin: 0; }
+
+.auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+.auth-tabs button {
+  flex: 1; background: none; border: none; color: var(--text-subdued);
+  padding: 10px 0; font-size: 14px; font-weight: 600; border-bottom: 2px solid transparent;
+  transition: color .2s ease, border-color .2s ease;
+}
+.auth-tabs button.active { color: var(--green); border-bottom-color: var(--green); }
+
+.auth-form label { display: block; font-size: 12px; color: var(--text-subdued); margin: 14px 0 6px; }
+.auth-form input {
+  width: 100%; padding: 11px 12px; background: #0f0f0f; border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); font-size: 14px;
+}
+.auth-form input:focus { outline: none; border-color: var(--green); }
+
+.btn-primary {
+  width: 100%; margin-top: 20px; padding: 12px; background: var(--green); color: #000;
+  border: none; border-radius: 30px; font-weight: 700; font-size: 14px;
+  transition: background .2s ease, transform .1s ease;
+}
+.btn-primary:hover { background: var(--green-hover); transform: scale(1.02); }
+
+.auth-error {
+  margin-top: 12px; color: var(--danger); font-size: 13px; text-align: center;
+}
+
+/* ---------- Shell de la aplicación ---------- */
+#appScreen { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 220px; flex-shrink: 0; background: var(--bg-sidebar);
+  padding: 22px 18px; display: flex; flex-direction: column;
+}
+.sidebar-logo { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 30px; }
+.sidebar-user { color: var(--text-subdued); font-size: 13px; margin-bottom: 4px; }
+.sidebar-user strong { color: var(--text); display: block; font-size: 15px; }
+.sidebar-nav { margin-top: 20px; color: var(--text-subdued); font-size: 13px; line-height: 2; }
+.sidebar-spacer { flex: 1; }
+.btn-logout {
+  background: transparent; border: 1px solid var(--border); color: var(--text);
+  border-radius: 30px; padding: 9px 14px; font-size: 13px; transition: border-color .2s ease;
+}
+.btn-logout:hover { border-color: var(--text); }
+
+.main-content { flex: 1; padding: 28px 36px 80px; overflow-x: hidden; }
+.main-content h2 { margin: 0 0 4px; font-size: 24px; }
+.main-content .subtitulo { color: var(--text-subdued); font-size: 14px; margin: 0 0 24px; }
+
+/* ---------- Fase 1: selección de géneros/artistas ---------- */
+.generos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px;
+}
+.genero-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 14px; text-align: center; transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.genero-card:hover { background: #262626; transform: translateY(-3px); }
+.genero-card.selected { border-color: var(--accent, var(--green)); background: #202820; }
+.genero-icono { font-size: 30px; margin-bottom: 8px; }
+.genero-nombre { font-size: 14px; font-weight: 600; }
+
+.artistas-panel {
+  margin-top: 18px; padding: 16px; background: var(--bg-card); border-radius: var(--radius);
+  border: 1px solid var(--border); animation: fadeIn .25s ease;
+}
+.artistas-titulo { font-weight: 700; margin-bottom: 10px; font-size: 14px; }
+.artistas-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: #262626; border: 1px solid var(--border); color: var(--text);
+  border-radius: 20px; padding: 7px 14px; font-size: 13px; transition: all .15s ease;
+}
+.chip:hover { border-color: var(--text-subdued); }
+.chip.selected { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+
+.btn-flotante {
+  position: fixed; bottom: 28px; right: 36px; background: var(--green); color: #000;
+  border: none; border-radius: 30px; padding: 15px 26px; font-weight: 700; font-size: 14px;
+  box-shadow: 0 6px 20px rgba(29,185,84,.4); transition: background .2s ease, transform .1s ease; z-index: 20;
+}
+.btn-flotante:hover { background: var(--green-hover); transform: scale(1.03); }
+
+/* ---------- Fase 2: Dashboard ---------- */
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.btn-secundario {
+  background: transparent; border: 1px solid var(--border); color: var(--text-subdued);
+  border-radius: 30px; padding: 8px 16px; font-size: 13px;
+}
+.btn-secundario:hover { border-color: var(--text); color: var(--text); }
+
+.seccion { margin-top: 34px; }
+.seccion h3 { font-size: 17px; margin-bottom: 4px; }
+.seccion .desc { color: var(--text-subdued); font-size: 13px; margin: 0 0 16px; }
+
+.sets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.set-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.set-card h4 { margin: 0 0 6px; font-size: 14px; color: var(--green); }
+.set-def { margin: 0; font-size: 12px; color: var(--text-subdued); }
+.set-count { margin: 8px 0 4px; font-size: 20px; font-weight: 700; }
+.set-items { margin: 0; font-size: 12px; color: var(--text-subdued); }
+
+/* Venn */
+.venn-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.venn-tabs button {
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-subdued);
+  border-radius: 20px; padding: 7px 16px; font-size: 13px;
+}
+.venn-tabs button.active { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+
+.venn-layout { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+.venn-diagrama { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; flex: 1 1 380px; max-width: 440px; }
+.venn-diagrama svg { width: 100%; height: auto; display: block; }
+
+.venn-controles { flex: 1 1 280px; min-width: 260px; }
+.venn-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+.venn-btn {
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
+  border-radius: 8px; padding: 9px 8px; font-size: 13px; transition: all .15s ease;
+}
+.venn-btn:hover { border-color: var(--green); }
+.venn-btn.active { background: var(--green); color: #000; border-color: var(--green); font-weight: 700; }
+
+.venn-resultado { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; min-height: 90px; }
+.hint { color: var(--text-subdued); font-size: 13px; margin: 0; }
+.resultado-formula { margin: 0 0 10px; font-weight: 700; color: var(--green); font-size: 14px; }
+.resultado-lista { display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; }
+.tag { background: #262626; border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 12px; }
+
+.region { fill: transparent; transition: fill .3s ease; }
+.region.activa { fill: var(--green); fill-opacity: .55; }
+.circulo-borde { fill: none; stroke-width: 2; }
+.circulo-a { stroke: #1DB954; }
+.circulo-b { stroke: #B3B3B3; }
+.universo-rect { fill: #141414; stroke: #333; stroke-width: 1.5; }
+.universo-label, .set-label { fill: var(--text-subdued); font-size: 15px; font-weight: 700; }
+
+/* Relaciones */
+.relacion-dominio { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; font-size: 13px; color: var(--text-subdued); margin-bottom: 16px; }
+.propiedades-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.prop-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+.prop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prop-nombre { font-weight: 700; font-size: 14px; }
+.badge { border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: 700; }
+.badge-true { background: rgba(29,185,84,.18); color: var(--green); }
+.badge-false { background: rgba(241,94,108,.18); color: var(--danger); }
+.prop-toggle { background: none; border: none; color: var(--text-subdued); font-size: 12px; padding: 0; text-decoration: underline; }
+.prop-justificacion { margin-top: 10px; font-size: 12.5px; color: var(--text-subdued); line-height: 1.5; }
+.prop-justificacion p { margin: 4px 0; }
+
+/* ---------- Animaciones y transiciones ---------- */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn .35s ease; }
+.fade-out { opacity: 0; transition: opacity .25s ease; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 780px) {
+  #appScreen { flex-direction: column; }
+  .sidebar { width: 100%; flex-direction: row; align-items: center; padding: 14px 18px; }
+  .sidebar-nav, .sidebar-spacer { display: none; }
+  .sidebar-user { margin-right: auto; }
+  .main-content { padding: 22px 18px 90px; }
+  .venn-layout { flex-direction: column; }
+}
